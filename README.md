@@ -22,14 +22,15 @@ From your terminal clone this git repository by typing the following command:
 Once the download is complete, you will see a folder called `PTB7_absorption`
 in your local disc. Entering this folder, you will find the following repository 
 structure:
-PTB7_absorption
+
+`PTB7_absorption`
 
 	input
-		[--input files should be put here
+		[--input files should be put here]
 	output
-		[--output files saved here
+		[--output files saved here]
 	src
-		[--source code can be found here
+		[--source code can be found here]
 	run.sh
 
  
