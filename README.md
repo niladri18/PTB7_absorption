@@ -1,6 +1,4 @@
-#Single Configuration Interaction model 
-
- 
+# Single Configuration Interaction model 
 
 Calculates the energy levels of PTB7 in the huckel limit
 then calculates the Hartree-Fock energy
