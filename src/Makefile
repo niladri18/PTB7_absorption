@@ -12,11 +12,13 @@ PROGRAM = sci
 
 all = $(PROGRAM)
 
-all: param.o read.o make_huckel.o make_coulomb.o hartree.o sci.o
-	$(FC) $(FCFLAGS) -o sci param.o read.o make_huckel.o make_coulomb.o hartree.o sci.o ${LIB}
+all: param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o
+	$(FC) $(FCFLAGS) -o sci param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o ${LIB}
 
 param.o: param.f90
 	$(FC) $(FCFLAGS) -c param.f90 $(LIB)
+allocation.o: allocation.f90
+	$(FC) $(FCFLAGS) -c allocation.f90 $(LIB)
 read.o: read.f90
 	$(FC) $(FCFLAGS) -c read.f90 $(LIB)
 make_huckel.o: make_huckel.f90
@@ -27,9 +29,6 @@ hartree.o: hartree.f90
 	$(FC) $(FCFLAGS) -c hartree.f90 $(LIB)
 sci.o: sci.f90
 	 $(FC) $(FCFLAGS) -c sci.f90  $(LIB)
-#pirg-rtc.o: pirg-rtc.f90
-#
-##$(FC) $(FCFLAGS) -c pirg-rtc.f90 $(LIB)
 
 
 
