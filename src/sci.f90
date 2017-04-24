@@ -3,6 +3,7 @@ program ppv
         use parameter
         use readfile
         use hartree
+        use make_huckel
 
 !open(unit=1,file="dipole_n.inp")
 open(unit=10,file="./output/nonlinear.out")
@@ -80,128 +81,16 @@ allocate(ilbond(2,200))
  end do
 
 
-! ====== Reading Main File ====
+! ====== Reading Main File =====
 
         call read_config
  
  
 
-! print*,"ended reading coordinates"
- print*, "Constructing Huckel matrix"
-! ========= Constructing Huckel Matrix =======
- do i=1,n
- do j=1,n
- arr(i,j)=0.0
- enddo
- enddo
- do i=1,n
- arr(i,i)=eps(i)
- enddo
- do i=1,nbonds1
- i1=ilbond(1,i)
- i2=ilbond(2,i)
- arr(i1,i2)=t1
- arr(i2,i1)=t1
- !print*,i1,i2,arr(i1,i2),arr(i2,i1)
- enddo 
- do i=nbonds1+1,nbonds1+nbonds2
- i1=ilbond(1,i)
- i2=ilbond(2,i)
- arr(i1,i2)=t2
- arr(i2,i1)=t2
- !print*,i1,i2,arr(i1,i2),arr(i2,i1)
- enddo 
- do i=nbonds1+nbonds2+1,nbonds1+nbonds2+nbonds3
- i1=ilbond(1,i)
- i2=ilbond(2,i)
- arr(i1,i2)=t3
- arr(i2,i1)=t3
- !print*,i1,i2,arr(i1,i2),arr(i2,i1)
- enddo 
- 
- do i=nbonds1+nbonds2+nbonds3+1,nbonds1+nbonds2+nbonds3+nbonds4
- i1=ilbond(1,i)
- i2=ilbond(2,i)
- arr(i1,i2)=tb
- arr(i2,i1)=tb
- !print*,i1,i2,arr(i1,i2),arr(i2,i1)
- enddo
- 
- !do i=nbonds1+nbonds2+nbonds3+nbonds4+1,nbonds1+nbonds2+nbonds3+nbonds4+nbonds5
- !i1=ilbond(1,i)
- !i2=ilbond(2,i)
- !arr(i1,i2)=t3
- !arr(i2,i1)=t3
-! print*,i1,i2,arr(i1,i2),arr(i2,i1)
- !enddo
-! =========================================
+! ====== Constructing Huckel matrix ===== 
 
- print*,"ended constructing huckel matrix"
+        call make_huckel_level
 
-! ========= Constructing Huckel Matrix =======
-! do i=1,natoms
-! do j=1,natoms
-! hucmat(i,j)=0.0d0
-! enddo
-! enddo
-! do i=1,natoms
-! hucmat(i,i)=siten(i)
-! enddo
-! do i=1,nbonds1
-! i1=ilbond(1,i)
-! i2=ilbond(2,i)
-! hucmat(i1,i2)=t1
-! enddo 
-! do i=1,nbonds2
-! i1=ilbond(1,i)
-! i2=ilbond(2,i)
-! hucmat(i1,i2)=t2
-! enddo 
-! do i=1,nbonds3
-! i1=ilbond(1,i)
-! i2=ilbond(2,i)
-! hucmat(i1,i2)=t3
-! enddo 
-! =========================================
-
-
-
-
-	!do i=1,n
-	!do j=1,n
-		!if(arr(i,j).ne.0.0)then
-		!print*,i,j,arr(i,j),arr(j,i)
-		!end if
-	!end do
-	!end do
-
-
-
-do i=1,n
-do j=1,n
-f(i,j)=0.0
-f(j,i)=0.0
-v_ij(i,j)=0.0
-v_ij(j,i)=0.0
-end do
-end do
-
-
-
-	f0=arr
-
-
-
-
-
- call DSYEV('V','U', N, arr, N, tmp, WORK, lwork, info )
- 
- 
- do i=1,n
- print*,i,tmp(i)
- end do
-
- print*,"Huckel calculation ends"
  
 v_n=arr
 d_n=tmp
