@@ -23,13 +23,14 @@ Once the download is complete, you will see a folder called `PTB7_absorption`
 in your local disc. Entering this folder, you will find the following repository 
 structure:
 PTB7_absorption
-|_input
-	|_<input files should be put here>
-|_output
-	|_<output files saved here>
-|_src
-	source code can be found here
-run.sh
+
+	input
+		[--input files should be put here
+	output
+		[--output files saved here
+	src
+		[--source code can be found here
+	run.sh
 
  
 
