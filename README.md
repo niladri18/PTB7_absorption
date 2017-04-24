@@ -41,7 +41,7 @@ To compile the code, enter `/src` then type:
 ### Running the code:
 
 To run the code, go back to the `/PTB7_absorption` folder and type:
-	~/PTB7_absorption$ bash run.sh
+	`~/PTB7_absorption$ bash run.sh`
 
 
 ### Viewing the output:
