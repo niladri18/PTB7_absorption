@@ -5,7 +5,7 @@ program ppv
         use hartree
         use make_huckel
         use make_coulomb
-
+        use allocation
 
 !open(unit=1,file="dipole_n.inp")
 open(unit=10,file="./output/nonlinear.out")
@@ -27,46 +27,15 @@ print*, "HF calculations starts"
    nn=(n/2+sulp/2)*(n/2-sulp/2)
    lwork=3*n-1
    
-allocate(arr(1:n,1:n))
-allocate(f(1:n,1:n))
-allocate(f0(1:n,1:n))
-!allocate(v(n,n)) 
-allocate(v_n(1:n,1:n))
-allocate(charge(1:n))
-allocate(p_on(1:n))
-allocate(v_hf(1:n,1:n))
-allocate(d_hf(1:n))
-allocate(d(1:n))
-allocate(d_n(1:n))
-allocate(v_ij(1:n,1:n))
-allocate(x_pos(1:n))
-allocate(y_pos(1:n))
-allocate(eps(1:n))
-allocate(z(1:n))
-allocate(z_pos(1:n))
-allocate(U_c(1:n))
-allocate(tmp(1:n))
-allocate(vtmp(1:n,1:n))
-allocate(h_s(1:nn,1:nn))
-allocate(m_states(1:nn,1:nn))
-allocate(E_tot(1:nn))
-allocate(tsc(1:nn))
-allocate(del(1:nn))
-allocate(vsc(1:nn,1:nn))
-allocate(dipole_x(1:nn))
-allocate(dipole_y(1:nn))
-allocate(dipole_z(1:nn))
-allocate(dip_mag(1:nn))
-allocate(s_index(1:n/2+sulp/2,n/2+sulp/2+1:n))
-!allocate(s_index(n/2-sulp/2+1:n,n/2-sulp/2,1                                 ))
-allocate(work(1:lwork))
-allocate(ilbond(2,200))
 
+! ===== Allocate the arrays depending on the value of n ===== !
 
- !do lv3=n/2-sulp/2+1,n
- !do lv4=n/2-sulp/2,1,-1
-        dip_mag=0.0
-        ilbond = 0.0
+        call allocate_array
+
+       !do lv3=n/2-sulp/2+1,n
+       !do lv4=n/2-sulp/2,1,-1
+       dip_mag=0.0
+       ilbond = 0.0
 
 
 ! ====== Reading Main File ====== !
@@ -115,6 +84,11 @@ print*, "HF calculations ends"
 stop
 
 
+
+! ========== END HF CALCULATION  ==============
+! =============================================
+! =============================================
+! ============================================= 
 !!!! Starting SCI calculations!!!!
  !stop
  
