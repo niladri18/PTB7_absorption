@@ -4,6 +4,8 @@ program ppv
         use readfile
         use hartree
         use make_huckel
+        use make_coulomb
+
 
 !open(unit=1,file="dipole_n.inp")
 open(unit=10,file="./output/nonlinear.out")
@@ -14,7 +16,7 @@ print*,"then calculates excited sates using SCI."
 
 print*, "HF calculations starts"
 
-! ==== Reading Coordinates =====
+! ==== Open files =====
    open(unit=90,file="./input/ptb7cord4.inp")
    open(unit=91,file="./input/unit4.inp")
    open(unit=25,file="./output/hf_ppt.out")
@@ -58,89 +60,64 @@ allocate(dip_mag(1:nn))
 allocate(s_index(1:n/2+sulp/2,n/2+sulp/2+1:n))
 !allocate(s_index(n/2-sulp/2+1:n,n/2-sulp/2,1                                 ))
 allocate(work(1:lwork))
+allocate(ilbond(2,200))
 
 
  !do lv3=n/2-sulp/2+1,n
  !do lv4=n/2-sulp/2,1,-1
-  dip_mag=0.0
+        dip_mag=0.0
+        ilbond = 0.0
 
 
-   write(*,*) 'total number of atoms =',n,nn,sulp
-   do i=1,n
-   read(90,*) x_pos(i),y_pos(i),z_pos(i)
-   end do
-   print*,"Ended reading the coordinates"
-! ==== End reading Coordinates ====
-
-allocate(ilbond(2,200))
-
- do i=1,2
- do j=1,200
- ilbond(i,j)=0.0
- end do
- end do
-
-
-! ====== Reading Main File =====
+! ====== Reading Main File ====== !
 
         call read_config
  
  
 
-! ====== Constructing Huckel matrix ===== 
+! ====== Constructing Huckel matrix ====== ! 
 
         call make_huckel_level
 
- 
-v_n=arr
-d_n=tmp
-tmp=0.0
-vtmp=0.0
 
+!  ===== Calculating the coulomb interactions ===== !
 
-it=0
-
-
-!  Calculating the coulomb interactions 
-do i=1,n
- v_ij(i,i)=U_c(i)
- do j=1,n
-
-
-r_ij=(x_pos(i)-x_pos(j))**2 + (y_pos(i)-y_pos(j))**2 + (z_pos(i)-z_pos(j))**2
-
-if(i.ne.j)then
- v_ij(i,j)=14.397/(kappa*sqrt((28.794/(U_c(i)+U_c(j)))**2+r_ij))
-! v_ij(i,j)=U_c(i)/(kappa*sqrt(1.0+0.611*r_ij))
-end if
-v_ij(j,i)=v_ij(i,j)
-end do
-end do
-
-
-! end calculating the coulomb interactions
+        call make_coulomb_interaction
         
- print*,"Hartree-Fock calculation starts"   
+       
+
+! ====== Hartree-Fock calculation ====== !
+
+         print*,"Hartree-Fock calculation starts"   
+
+        v_n=arr
+        d_n=tmp
+        tmp=0.0
+        vtmp=0.0
+
+        it=0
 
 
-call hartree_fock
+        call hartree_fock
 
- !call eigsrt(d_hf,v_hf)
+        !call eigsrt(d_hf,v_hf)
 
-print*,"converged in steps",it
+        print*,"converged in steps",it
 
-do i=1,n
-write(25,*)tmp(i),i,charge(i)
-!print*,tmp(i),i,charge(i)
-!print*,d_hf(i),i,charge(i)
-end do
+        do i=1,n
+                write(25,*)tmp(i),i,charge(i)
+                !print*,tmp(i),i,charge(i)
+                !print*,d_hf(i),i,charge(i)
+        end do
 
+
+print*, "HF calculations ends"
+stop
 
 
 !!!! Starting SCI calculations!!!!
  !stop
  
-print*, "HF calculations ends"
  
  h_s=0.0
  vtmp=f
