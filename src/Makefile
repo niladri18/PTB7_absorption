@@ -2,7 +2,7 @@ version = 05-21-2014
 
 
 FC = ifort
-FCFLAGS = -O1 -ipo
+FCFLAGS = -O1 -ipo -g
 LIB = -L/usr/local/lib -mkl
 
 
@@ -12,8 +12,8 @@ PROGRAM = sci
 
 all = $(PROGRAM)
 
-all: param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o
-	$(FC) $(FCFLAGS) -o sci param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o ${LIB}
+all: param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o main.o
+	$(FC) $(FCFLAGS) -o sci param.o allocation.o read.o make_huckel.o make_coulomb.o hartree.o sci.o main.o ${LIB}
 
 param.o: param.f90
 	$(FC) $(FCFLAGS) -c param.f90 $(LIB)
@@ -29,6 +29,8 @@ hartree.o: hartree.f90
 	$(FC) $(FCFLAGS) -c hartree.f90 $(LIB)
 sci.o: sci.f90
 	 $(FC) $(FCFLAGS) -c sci.f90  $(LIB)
+main.o: main.f90
+	$(FC) $(FCFLAGS) -c main.f90 $(LIB)
 
 
 
